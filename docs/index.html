@@ -434,5 +434,20 @@ frameborder="1"
 
     </script>
 
+
+	<!--
+		Chance of Deltarune Now Patch (created by PROJECT_ROOT/src/patch.py)
+		This patch prevents the "unsaved changes" dialog from appearing.
+		A patch is also made above here to fix the browserfs URL.
+	-->
+	<script>
+		window.addEventListener("load", () => {
+    		window.onbeforeunload = null;
+    		window.addEventListener("beforeunload", (e) => {
+    		    e.stopImmediatePropagation();
+    		}, true);
+		});
+	</script>
 </body>
+
 </html>
