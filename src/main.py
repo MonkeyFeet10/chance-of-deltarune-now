@@ -9,7 +9,6 @@ def asset(path: str) -> Path:
 	else:
 		return Path(__file__).resolve().parent.parent / "assets" / path
 
-
 async def main():
 	import pygame, time
 	pygame.init()
@@ -35,12 +34,10 @@ async def main():
 	rect = pygame.Rect(4, 4, 56, 56)
 	delta_rune = pygame.transform.scale(delta_rune, rect.size)
 	floofy_boi = pygame.transform.scale(pygame.image.load(asset("ralsei.png")), rect.size)
-	delta_music = pygame.mixer.Sound(asset("faint_glow_fixed.wav"))
-	floofy_music = pygame.mixer.Sound(asset("pushing_buddies_fixed.wav"))
-	delta_music.play(loops=-1)
-	delta_music.set_volume(1)
-	floofy_music.play(loops=-1)
-	floofy_music.set_volume(0)
+	music = pygame.mixer.music
+	music.load(asset("faint_glow_fixed.wav"))
+	music.set_volume(1)
+	music.play(-1)
 	floof = 0
 	while running:
 		for event in pygame.event.get():
@@ -52,11 +49,15 @@ async def main():
 					pygame.display.set_icon(floofy_boi if floof else delta_rune)
 					pygame.display.set_caption("Chance of Floofy Boi Now" if floof else "Chance of Deltarune Now")
 					if floof:
-						floofy_music.set_volume(0.9)
-						delta_music.set_volume(0)
+						music.stop()
+						music.load(asset("pushing_buddies_fixed.wav"))
+						music.set_volume(0.9)
+						music.play(-1)
 					else:
-						delta_music.set_volume(1)
-						floofy_music.set_volume(0)
+						music.stop()
+						music.load(asset("faint_glow_fixed.wav"))
+						music.set_volume(1)
+						music.play(-1)
 		screen.fill((0, 0, 0, 0))
 		utc = time.gmtime()
 		current = time.time_ns() - 1767225600000000000
